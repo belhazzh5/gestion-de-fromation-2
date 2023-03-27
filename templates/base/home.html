@@ -1,2 +1,14 @@
-<h1>hello world! </h1>
-<h2>this a fromation management application</h2>
+{% extends "base.html" %}
+{% block content %}
+
+<h1>this is the home page</h1>
+{% if formations %}    
+<h1>list des formations :</h1>
+<ul>
+    {% for formation in formations %}
+    <li>{{formation.name}}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+
+{% endblock content %}
