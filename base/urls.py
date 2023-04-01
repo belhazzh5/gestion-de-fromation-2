@@ -1,8 +1,8 @@
 from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
-from .views import home,dash
+from .views import FormationListView,dash
 urlpatterns = [
-    path("",home,name="home"),
+    path("",FormationListView.as_view(),name="home"),
     path("dash/",dash,name="dash"),
 ]+ static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)
