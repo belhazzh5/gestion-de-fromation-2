@@ -162,6 +162,7 @@
           {% if myFormation %}
           {% for formation in myFormation %}
           <div class="col-lg-4 col-md-6 d-flex align-items-stretch mt-4 mt-lg-0">
+            <a href="{% url 'formation' formation.slug %}">
             <div class="course-item">
               <img src="{{formation.image.url}}" class="img-fluid" alt="...">
               <div class="course-content">
@@ -170,7 +171,7 @@
                 </div>
 
                 <h3><a href="course-details.html">{{formation.name}}</a></h3>
-                <p>Et architecto provident deleniti facere repellat nobis iste. Id facere quia quae dolores dolorem tempore.</p>
+                <p>{{formation.description|slice:150}}</p>
                 <div class="trainer d-flex justify-content-between align-items-center">
                   <div class="trainer-profile d-flex align-items-center">
                     <img src="{% static 'img/trainers/trainer-3.jpg' %}" class="img-fluid" alt="">
@@ -183,6 +184,7 @@
                 </div>
               </div>
             </div>
+          </a>
           </div>
           {% endfor %}
            <!-- End Course Item-->

@@ -19,7 +19,11 @@ class FormationListView(LoginRequiredMixin,ListView):
         context['nbParticipant'] =  2
         return context
     
-    
+class FormationDetailView(DetailView):
+    model = Formation
+    template_name = "base/course-details.html"
+    context_object_name = "formation"
+
 
 # @login_required
 def dash(request):
