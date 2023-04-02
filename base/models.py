@@ -14,14 +14,12 @@ class Formateur (models.Model):
         return self.name
 class Participant(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE,null=True,blank=True)
-    nom = models.CharField(max_length=50,null=True,blank=True)
-    prenom = models.CharField(max_length=50,null=True,blank=True)
-    cin = models.CharField(validators=[MinLengthValidator(8)],max_length=8)
+    cin = models.CharField(validators=[MinLengthValidator(8)],max_length=8,blank=True, null=True)
     service = models.CharField(max_length=50,null=True,blank=True)
-    entreprise = models.CharField(max_length=50,null=True,blank=True)
     email = models.EmailField(blank=True,null=True)
+    entreprise = models.CharField(max_length=50,null=True,blank=True)
     def __str__(self):
-        return str(self.nom)
+        return str(self.user.username)
 class Formation(models.Model):
     name = models.CharField(max_length=50)
     num_salle = models.CharField(max_length=50)

@@ -27,6 +27,8 @@
       </nav><!-- .navbar -->          
       {% if user.is_authenticated %}
       <a href="{% url 'logout' %}" class="get-started-btn">Deconnecter</a>
+      {% else %}
+      <a href="{% url 'login' %}" class="get-started-btn">Connecter</a>
       {% endif %}
 
     </div>
@@ -179,6 +181,9 @@
                   </div>
                   <div class="trainer-rank d-flex align-items-center">
                     <i class="bx bx-user"></i>&nbsp;{{nbParticipant}}
+                    {% if user.is_authenticated %}
+                    <a href="{% url 'join_formation' formation.slug %}" style="margin-left:15px;" class="join">Join</a>                   
+                    {% endif %}
                     &nbsp;&nbsp;
                   </div>
                 </div>

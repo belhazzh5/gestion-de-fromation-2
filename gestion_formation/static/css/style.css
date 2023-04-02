@@ -1572,3 +1572,7 @@ section {
   color: #fff;
   text-decoration: none;
 }
+.join:hover{
+  color: #86db9f;
+  transition: .3s;
+}
