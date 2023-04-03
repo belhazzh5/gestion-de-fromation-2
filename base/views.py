@@ -3,6 +3,8 @@ from .models import Formation,Participant
 from django.contrib.auth.decorators import login_required
 from django.views.generic import ListView,DetailView,CreateView,UpdateView,DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib import messages
+
 # Create your views here.
 # def home(request):
 #     context = {
@@ -28,8 +30,18 @@ class FormationDetailView(DetailView):
 @login_required
 def join_formation(request, slug):
     formation = get_object_or_404(Formation, slug=slug)
-    participant = Participant.objects.create(user=request.user,cin='14501407')
-    formation.participant.add(participant)
+    participant = Participant.objects.get(user=request.user)
+    if participant:
+        if participant in formation.participant.all():
+            messages.error(request, "You have already joined this formation.")
+            return redirect('home')
+        else:
+            formation.participant.add(participant)
+            messages.success(request, "You have joined the formation successfully.")
+    else:
+        participant = Participant.objects.create(user=request.user,cin='14501407')
+        formation.participant.add(participant)
+        messages.success(request, "You have joined the formation successfully.")
     formation.save()
     return redirect('formation', slug=formation.slug)
 

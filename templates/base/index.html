@@ -4,11 +4,19 @@
 
 
 
-
   {% if myFormation %}
 
   <!-- ======= Header ======= -->
   <header id="header" class="fixed-top">
+
+    {% if messages %}
+    <ul class="messages" style="list-style: none;">
+        {% for message in messages %}
+            <li class="alert alert-danger">{{ message }}</li>
+        {% endfor %}
+    </ul>
+{% endif %}
+
     <div class="container d-flex align-items-center">
       
       {% comment %} <h1 class="logo me-auto"><a href="index.html">Mentor</a></h1> {% endcomment %}
@@ -349,5 +357,15 @@
   <div id="preloader"></div>
   <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
 
- 
+  <script>
+    // Set a timeout for the message element to disappear after 5 seconds
+    setTimeout(function() {
+        var messageElement = document.querySelector('.messages');
+        messageElement.style.opacity = '0';
+        setTimeout(function() {
+            messageElement.style.display = 'none';
+        }, 500); // fade out animation duration
+    }, 2000);
+</script>
+
   {% endblock content %}

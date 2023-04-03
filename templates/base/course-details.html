@@ -78,31 +78,19 @@
     <!-- ======= Cource Details Tabs Section ======= -->
     <section id="cource-details-tabs" class="cource-details-tabs">
       <div class="container" data-aos="fade-up">
-
+        {% if user.is_staff %}
         <div class="row">
           <div class="col-lg-3">
             <h4>Listes des Participants</h4>
-            <ul class="nav nav-tabs flex-column">
-              <li class="nav-item">
-                <a class="nav-link active show" data-bs-toggle="tab" href="#tab-1">Modi sit est</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" data-bs-toggle="tab" href="#tab-2">Unde praesentium sed</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" data-bs-toggle="tab" href="#tab-3">Pariatur explicabo vel</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" data-bs-toggle="tab" href="#tab-4">Nostrum qui quasi</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" data-bs-toggle="tab" href="#tab-5">Iusto ut expedita aut</a>
-              </li>
+            <ul class="list-group">
+              {% for participant in formation.participant.all %}
+              <li class="list-group-item">{{participant}} | </li>
+              {% endfor %}
             </ul>
           </div>
-  
+          
         </div>
-
+        {% endif %}
       </div>
     </section><!-- End Cource Details Tabs Section -->
 
