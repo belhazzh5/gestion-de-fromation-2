@@ -4,7 +4,6 @@
 <!-- ======= Header ======= -->
   <header id="header" class="fixed-top">
     <div class="container d-flex align-items-center">
-      
       {% comment %} <h1 class="logo me-auto"><a href="index.html">Mentor</a></h1> {% endcomment %}
       <!-- Uncomment below if you prefer to use an image logo -->
       <a href="{% url 'home' %}" class="logo me-auto"><img src="{% static 'img/favicon.png' %}" alt="logo"  class="img-fluid"><span class="logotxt"> Centre National de l’Informatique </span></a>
@@ -79,6 +78,7 @@
     <section id="cource-details-tabs" class="cource-details-tabs">
       <div class="container" data-aos="fade-up">
         {% if user.is_staff %}
+        {% if formation.participant.all %}
         <div class="row">
           <div class="col-lg-3">
             <h4>Listes des Participants</h4>
@@ -88,8 +88,10 @@
               {% endfor %}
             </ul>
           </div>
-          
         </div>
+        {% else %}
+        <h4 class="alert alert-danger">il n'y a pas encore de participants!</h4>
+        {% endif %}
         {% endif %}
       </div>
     </section><!-- End Cource Details Tabs Section -->

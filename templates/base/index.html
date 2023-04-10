@@ -8,7 +8,6 @@
 
   <!-- ======= Header ======= -->
   <header id="header" class="fixed-top">
-
     {% if messages %}
     <ul class="messages" style="list-style: none;">
         {% for message in messages %}
@@ -180,7 +179,7 @@
                   <h4>{{formation.domaine}}</h4>
                 </div>
 
-                <h3><a href="course-details.html">{{formation.name}}</a></h3>
+                <h3><a href="{% url 'formation' formation.slug %}">{{formation.name}}</a></h3>
                 <p>{{formation.description|slice:150}}</p>
                 <div class="trainer d-flex justify-content-between align-items-center">
                   <div class="trainer-profile d-flex align-items-center">
@@ -188,9 +187,13 @@
                     <span>{{formation.formateur}}</span>
                   </div>
                   <div class="trainer-rank d-flex align-items-center">
-                    <i class="bx bx-user"></i>&nbsp;{{nbParticipant}}
+                    <i class="bx bx-user"></i>&nbsp; {{ formation.participant.count }}
                     {% if user.is_authenticated %}
+                    {% if participant_user in formation.participant.all %}
+                    <a href="{% url 'leave_formation' formation.slug %}" style="margin-left:15px;color:red;" class="join">Leave</a>                   
+                    {% else %}
                     <a href="{% url 'join_formation' formation.slug %}" style="margin-left:15px;" class="join">Join</a>                   
+                    {% endif %}
                     {% endif %}
                     &nbsp;&nbsp;
                   </div>

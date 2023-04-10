@@ -37,10 +37,11 @@ class Formation(models.Model):
     formateur = models.ForeignKey(Formateur, on_delete=models.CASCADE)
     max_places = models.IntegerField(blank=True, null=True,default=20)
     image = models.ImageField(upload_to="images-formation",blank=True, null=True)
-    participant = models.ManyToManyField(Participant)
+    participant = models.ManyToManyField(Participant,blank=True, null=True)
     slug = models.SlugField(null=True,blank=True)
     def __str__(self):
         return str(self.name + " par " + self.formateur.name)
+
 
 
 @receiver(pre_save, sender=Formation)

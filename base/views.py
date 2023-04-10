@@ -16,10 +16,20 @@ class FormationListView(ListView):
     model = Formation
     template_name = "base/index.html"
     context_object_name = "myFormation"
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['nbParticipant'] =  2
-        return context
+    def get(self, request, *args, **kwargs):
+        # Get the logged in user
+        user = self.request.user
+
+        # Call the parent's get() method to get the context data dictionary
+        context = super().get(request, *args, **kwargs).context_data
+
+        # Add the user to the context data dictionary
+        context['user'] = user
+        if user.is_authenticated:
+            context['participant_user'] = Participant.objects.get(user=user)
+
+        # Return the updated context data dictionary
+        return self.render_to_response(context)
     
 class FormationDetailView(DetailView):
     model = Formation
@@ -44,6 +54,21 @@ def join_formation(request, slug):
         messages.success(request, "You have joined the formation successfully.")
     formation.save()
     return redirect('formation', slug=formation.slug)
+
+@login_required
+def leave_formation(request, slug):
+    formation = get_object_or_404(Formation, slug=slug)
+    participant = Participant.objects.get(user=request.user)
+    if participant:
+        if participant in formation.participant.all():
+            formation.participant.remove(participant)
+            messages.success(request, "You have left the formation successfully.")
+        else:
+            messages.error(request, "You are not part of this formation.")
+    else:
+        messages.error(request, "You are not a registered participant.")
+    formation.save()
+    return redirect('home')
 
 # @login_required
 def dash(request):
