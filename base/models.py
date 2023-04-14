@@ -19,7 +19,6 @@ class Participant(models.Model):
     service = models.CharField(max_length=50,null=True,blank=True)
     email = models.EmailField(blank=True,null=True)
     entreprise = models.CharField(max_length=50,null=True,blank=True)
-    # formations = models.ManyToManyField(Formation, blank=True)
 
     def __str__(self):
         if self.user:
@@ -37,12 +36,31 @@ class Formation(models.Model):
     formateur = models.ForeignKey(Formateur, on_delete=models.CASCADE)
     max_places = models.IntegerField(blank=True, null=True,default=20)
     image = models.ImageField(upload_to="images-formation",blank=True, null=True)
-    participant = models.ManyToManyField(Participant,blank=True, null=True)
+    participant = models.ManyToManyField(Participant,blank=True)
     slug = models.SlugField(null=True,blank=True)
     def __str__(self):
         return str(self.name + " par " + self.formateur.name)
 
 
+class Profile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE,blank=True, null=True)
+    email = models.EmailField(max_length=254,blank=True, null=True)
+    image = models.ImageField(upload_to="images/users/",blank=True, null=True)
+    name = models.CharField(max_length=50,blank=True, null=True)
+    def __str__(self):
+        return str(self.user.username)
+
+class Activity(models.Model):
+    name = models.CharField(max_length=50,blank=True, null=True)
+    user = models.ForeignKey(User,on_delete=models.CASCADE,blank=True, null=True)
+    timestamp = models.DateTimeField(auto_now_add=True,blank=True, null=True)
+    def __str__(self):
+        return self.user.username
+
+class Notification(models.Model):
+    name = models.CharField(max_length=50,blank=True, null=True)
+    timestamp = models.DateField(auto_now_add=True)
+    
 
 @receiver(pre_save, sender=Formation)
 def pre_save_receiver(sender, instance, *args, **kwargs):

@@ -33,7 +33,12 @@
         <p>La technologie est mère de la grande entreprise, grand-mère de l'intervention étatiste. </p>
       </div>
     </div><!-- End Breadcrumbs -->
-
+    {% if user.is_staff %}    
+    <div class="icons">
+      <a href="{% url 'update_formation' formation.slug %}"><img src="{% static 'images/edit.png' %}" alt="edit"><span>Edit</span></a>
+      <a href="{% url 'delete_formation' formation.slug %}"><img src="{% static 'images/delete.png' %}" alt="delete"><span>Delete</span></a>
+    </div>
+    {% endif %}
     <!-- ======= Cource Details Section ======= -->
     <section id="course-details" class="course-details">
       <div class="container" data-aos="fade-up">

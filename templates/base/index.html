@@ -25,8 +25,10 @@
       <nav id="navbar" class="navbar order-last order-lg-0">
         <ul>
           <li><a class="active" href="index.html">Home</a></li>
-          <li><a href="#">A propos de nous</a></li>
-          <li><a href="#">Courses</a></li>
+          {% if user.is_authenticated %}
+          <li><a href="{% url 'profile' %}">Profile</a></li>
+          {% endif %}
+          <li><a href="{% url 'create_formation' %}">Create</a></li>
           <li><a href="#">Formateurs</a></li>
           <li><a href="#">Contact</a></li>
         </ul>
@@ -172,16 +174,18 @@
           {% for formation in myFormation %}
           <div class="col-lg-4 col-md-6 d-flex align-items-stretch mt-4 mt-lg-0">
             <a href="{% url 'formation' formation.slug %}">
-            <div class="course-item">
-              <img src="{{formation.image.url}}" class="img-fluid" alt="...">
-              <div class="course-content">
-                <div class="d-flex justify-content-between align-items-center mb-3">
-                  <h4>{{formation.domaine}}</h4>
-                </div>
-
-                <h3><a href="{% url 'formation' formation.slug %}">{{formation.name}}</a></h3>
-                <p>{{formation.description|slice:150}}</p>
-                <div class="trainer d-flex justify-content-between align-items-center">
+              {% if formation.image %}              
+              <div class="course-item">
+                <img src="{{formation.image.url}}" class="img-fluid" alt="...">
+                <div class="course-content">
+                  <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h4>{{formation.domaine}}</h4>
+                  </div>
+                  
+                  {% endif %}
+                  <h3><a href="{% url 'formation' formation.slug %}">{{formation.name}}</a></h3>
+                  <p>{{formation.description|slice:150}}</p>
+                  <div class="trainer d-flex justify-content-between align-items-center">
                   <div class="trainer-profile d-flex align-items-center">
                     <img src="{% static 'img/trainers/trainer-3.jpg' %}" class="img-fluid" alt="">
                     <span>{{formation.formateur}}</span>
