@@ -4,6 +4,9 @@ from django.core.validators import MinLengthValidator
 from django.dispatch import receiver
 from django.db.models.signals import pre_save
 from .utils import unique_slug_generator
+from django.db.models.signals import post_save,post_delete
+from django.contrib.auth import get_user_model
+
 # Create your models here.
 
 class Formateur (models.Model):
@@ -40,7 +43,10 @@ class Formation(models.Model):
     slug = models.SlugField(null=True,blank=True)
     def __str__(self):
         return str(self.name + " par " + self.formateur.name)
-
+    def save(self, *args, **kwargs):
+        if Formation.objects.count() >= self.max_places:
+            raise ValidationError("la formation est saturé.")
+        super().save(*args, **kwargs)
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE,blank=True, null=True)
@@ -60,9 +66,27 @@ class Activity(models.Model):
 class Notification(models.Model):
     name = models.CharField(max_length=50,blank=True, null=True)
     timestamp = models.DateField(auto_now_add=True)
-    
+    user = models.ForeignKey(User, on_delete=models.CASCADE,blank=True, null=True)
+    def __str__(self):
+        return self.name
 
 @receiver(pre_save, sender=Formation)
 def pre_save_receiver(sender, instance, *args, **kwargs):
    if not instance.slug:
        instance.slug = unique_slug_generator(instance)
+
+@receiver(post_save, sender=Formation)
+def formation_created_or_updated(sender, instance, created, **kwargs):
+    if created:
+        # If a new Formation object is created, create a notification object
+        name = f"A new formation {instance.name} has been created"
+    else:
+        # If an existing Formation object is updated, create a notification object
+        name = f'Formation "{instance.name}" has been updated.'
+    user = get_user_model().objects.first()  # Replace this with your logic to get the user who triggered the action
+    Notification.objects.create(name=name, user=user)
+
+@receiver(post_delete, sender=Formation)
+def formation_deleted(sender, instance, **kwargs):
+    user = get_user_model().objects.first()  # Replace this with your logic to get the user who triggered the action
+    Notification.objects.create(name=f'Formation "{instance.name}" has been deleted.', user=user)

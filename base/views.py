@@ -1,5 +1,5 @@
 from django.shortcuts import render,get_object_or_404,redirect
-from .models import Formation,Participant,Profile,Activity
+from .models import Formation,Participant,Profile,Activity,Notification
 from .forms import UserRegisterForm,ProfileForm,FormationForm
 from django.contrib.auth.decorators import login_required
 from django.views.generic import ListView,DetailView,CreateView,UpdateView,DeleteView
@@ -8,6 +8,9 @@ from django.contrib import messages
 from django.urls import reverse,reverse_lazy
 from django.contrib.auth.models import User
 import datetime
+from django.contrib.auth import login,authenticate
+from random import sample
+
 
 # Create your views here.
 # def home(request):
@@ -16,6 +19,16 @@ import datetime
 #     }
 #     return render(request, "base/index.html",context)
 
+# def register(request):
+#     if request.method == 'POST':
+#         form = UserRegisterForm(request.POST)
+#         if form.is_valid():
+#             user = form.save()
+#             login(request, user)
+#             return redirect('home')
+#     else:
+#         form = UserRegisterForm()
+#     return render(request, 'registration/register.html', {'form': form})
 class FormationListView(ListView):
     model = Formation
     template_name = "base/index.html"
@@ -48,19 +61,26 @@ class FormationCreateView(CreateView):
     template_name = "base/create_formation.html"
     queryset = Formation.objects.none()
     def get_success_url(self):
-        return reverse_lazy('home')
+        formation_slug = self.kwargs['slug']
+        formation = get_object_or_404(Formation, slug=formation_slug)
+        return reverse_lazy('formation',kwargs={'slug':formation.slug})
 class FormationUpdate(UpdateView):
     model = Formation
     fields = ("name","num_salle","domaine","description","date_debut","horraire_debut","date_fin","formateur","max_places","image")
     template_name = "base/update_formation.html"    
     def get_success_url(self):
-        return reverse_lazy('home')
+        formation_slug = self.kwargs['slug']
+        formation = get_object_or_404(Formation, slug=formation_slug)
+        return reverse_lazy('formation',kwargs={'slug':formation.slug})
+
 
 class FormationDelete(DeleteView):
     model = Formation
     template_name = "base/delete_formation.html"
     def get_success_url(self):
-        return reverse_lazy('home')
+        return reverse_lazy('profile')
+
+
 
 @login_required
 def join_formation(request, slug):
@@ -110,6 +130,13 @@ def signUpView(request):
             if user:
                 Participant.objects.create(user=user,email=user.email)
                 Profile.objects.create(user=user,name=user.username,email=user.email)
+            # log in the user after successful registration
+                username = form.cleaned_data.get('username')
+                password = form.cleaned_data.get('password1')
+                user = authenticate(username=username, password=password)
+                if user is not None:
+                    login(request, user)
+                    return redirect(reverse_lazy('home'))
             return redirect(reverse_lazy('login'))
     context = {
         'form':form
@@ -132,6 +159,19 @@ def profile(request):
         context['profile'] = Profile.objects.get(user=request.user)
         participant = Participant.objects.get(user=request.user)
         context['formations'] = participant.formation_set.all()
-        context['activities'] = Activity.objects.filter(user=request.user).order_by('-timestamp')[:4]
+        context['activities'] = Activity.objects.filter(user=request.user)[:4]
         context['form'] = form
+        context['allFormations'] = Formation.objects.all()[:10]
+        notifications_rev= Notification.objects.order_by('-timestamp')
+        if notifications_rev:
+            notifications = []
+            for notif in reversed(notifications_rev):
+                notifications.append(notif)
+        context['notifications'] = notifications[:5]
+        print(notifications)
+        context['suggestions'] = Formation.objects.exclude(participant=request.user.participant)[:3]
     return render(request, 'base/profile.html',context)
+
+def formation_detail(request,slug):
+    print(slug)
+    return render(request, 'base/detail2.html')

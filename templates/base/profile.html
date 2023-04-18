@@ -66,10 +66,13 @@
 </ul>
   
 <ul class="navbar-nav align-items-center right-nav-link">
+  {% if request.user.is_staff %}
  <li class="nav-item dropdown-lg">
-   <a class="nav-link dropdown-toggle dropdown-toggle-nocaret waves-effect" data-toggle="dropdown" href="javascript:void();">
-   <i class="fa fa-envelope-open-o"></i></a>
+   <a  href="{% url 'create_formation' %}">
+    <span style="margin-right:5px">formation</span><i class="fa fa-plus" aria-hidden="true"></i>
+  </a>
  </li>
+ {% endif %}
  <li class="nav-item dropdown-lg">
    <a class="nav-link dropdown-toggle dropdown-toggle-nocaret waves-effect" data-toggle="dropdown" href="javascript:void();">
     <ul class="dropdown-menu dropdown-menu-right">
@@ -94,7 +97,9 @@
     <li class="dropdown-item user-details">
      <a href="javaScript:void();">
         <div class="media">
+          {% if request.user.profile.image %}
           <div class="avatar"><img class="align-self-start mr-3" src="{{request.user.profile.image.url}}" alt="user avatar"></div>
+          {% endif %}
          <div class="media-body">
          <h6 class="mt-2 user-title">{{request.user.profile.name}}</h6>
          {% if request.user.profile.email %}         
@@ -132,7 +137,7 @@
             </div>
             <div class="card-body pt-5">
               {% if request.user.profile.image %}
-              <img src="{{request.user.profile.image.url}}" alt="profile-image" class="profile" style="max-height:81px; min-width:70px" >
+              <img src="{{request.user.profile.image.url}}" alt="profile-image" class="profile" style="max-height:81px; min-width:85px;" >
               {% else %}
               <img src="{% static 'images/user.png' %}" alt="profile-image" class="profile" style="max-height:81px; min-width:70px" >
               {% endif %}
@@ -178,30 +183,48 @@
            <div class="card">
             <div class="card-body">
             <ul class="nav nav-tabs nav-tabs-primary top-icon nav-justified">
+              {% if request.user.is_staff %}
+              
                 <li class="nav-item">
-                    <a href="javascript:void();" data-target="#profile" data-toggle="pill" class="nav-link active"><i class="icon-user"></i> <span class="hidden-xs">Profile</span></a>
+                    <a href="javascript:void();" data-target="#profile" data-toggle="pill" class="nav-link active"><i class="icon-user"></i> <span class="hidden-xs">Formation</span></a>
                 </li>
                 <li class="nav-item">
-                    <a href="javascript:void();" data-target="#messages" data-toggle="pill" class="nav-link"><i class="icon-envelope-open"></i> <span class="hidden-xs">Messages</span></a>
+                    <a href="javascript:void();" data-target="#messages" data-toggle="pill" class="nav-link"><i class="icon-envelope-open"></i> <span class="hidden-xs">Activity</span></a>
                 </li>
+                {% else %}
+                <li class="nav-item">
+                  <a href="javascript:void();" data-target="#profile" data-toggle="pill" class="nav-link active"><i class="icon-envelope-open"></i> <span class="hidden-xs">Activity</span></a>
+              </li>
+                <li class="nav-item">
+                  <a href="javascript:void();" data-target="#messages" data-toggle="pill" class="nav-link "><i class="icon-user"></i> <span class="hidden-xs">Formation</span></a>
+              </li>
+                {% endif %}
                 <li class="nav-item">
                     <a href="javascript:void();" data-target="#edit" data-toggle="pill" class="nav-link"><i class="icon-note"></i> <span class="hidden-xs">Edit</span></a>
                 </li>
             </ul>
             <div class="tab-content p-3">
                 <div class="tab-pane active" id="profile">
-                    <h5 class="mb-3">{{request.user.username}} Profile</h5>
+                    <h5 class="mb-3"> {% if request.user.is_staff %} Admin: {% else %} User: {% endif %}{{request.user.username}}</h5>
                     <div class="row">
-   
+                      {% if request.user.is_staff %}
+
                         <div class="col-md-12">
-                            <h5 class="mt-2 mb-3"><span class="fa fa-clock-o ion-clock float-right"></span> Recent Activity</h5>
+                            <h5 class="mt-2 mb-3"><span class="fa fa-clock-o ion-clock float-right"></span> Recent Formation</h5>
                              <div class="table-responsive">
                             <table class="table table-hover table-striped">
                                 <tbody>                    
-                                    {% for activity in activities %}                
+                                    {% for formation in allFormations %}                
                                     <tr>
-                                        <td>
-                                            {{activity.name}}
+                                      
+                                       <td style="display:flex;justify-content:space-between">
+                                        <a href="{% url 'formation2' formation.slug %}"> 
+                                            <span>{{formation.name}} by {{formation.formateur}}</span> 
+                                          </a>
+                                            <div class="btn"><a href="{% url 'update_formation' formation.slug %}">
+                                              <span class="btn btn-outline-info" style="margin-right:10px">edit</span></a>
+                                               <a href="{% url 'delete_formation' formation.slug %}"><span class="btn btn-outline-danger">delete</span></a>
+                                              </div>
                                         </td>
                                     </tr>
                                     {% endfor %}
@@ -209,28 +232,40 @@
                             </table>
                           </div>
                         </div>
+                        
+                      {% else %}
+                      <div class="col-md-12">
+                         <div class="table-responsive">
+                        <table class="table table-hover table-striped">
+                            <tbody>                    
+                                {% for activity in activities %}                
+                                <tr>
+                                  
+                                   <td style="display:flex;justify-content:space-between">
+                                        <span>{{activity.name}}</span> 
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                      </div>
+                    </div>
+                      {% endif %}
                     </div>
                     <!--/row-->
                 </div>
                 <div class="tab-pane" id="messages">
                     <div class="alert alert-info alert-dismissible" role="alert">
-				   <button type="button" class="close" data-dismiss="alert">&times;</button>
-				    <div class="alert-icon">
-					 <i class="icon-info"></i>
-				    </div>
-				    <div class="alert-message">
-				      <span><strong>Info!</strong> Some message maybe help you to make the library better.</span>
-				    </div>
                   </div>
                   <div class="table-responsive">
                     {% if request.user.is_staff %}                    
-                    {% if messages %}
+                    {% if notifications %}
                     <table class="table table-hover table-striped">
                         <tbody>                           
-                            {% for message in messages %}         
+                            {% for notification in notifications %}         
                             <tr>
                                 <td>
-                                   <span class="float-right font-weight-bold">{{message.name}}</span> {{message.message}}
+                                   <span class="float-right font-weight-bold">{{notification.name}}</span>
                                 </td>
                             </tr>
                             {% endfor %}
@@ -238,19 +273,25 @@
                         {% else %}
                         <tbody>
                             <tr>
-                                <td>there is no messages yet!</td>
+                                <td>there is no actions yet!</td>
                             </tr>
                         </tbody>
                         {% endif %}
                     </table>
                     {% else %}
-                    {% if myMessages %}
+                    {% if suggestions %}
                     <table class="table table-hover table-striped">
+                      <h5>Suggestions</h5>
                         <tbody>                           
-                            {% for message in myMessages %}         
+                            {% for formation in suggestions %}         
                             <tr>
-                                <td>
-                                   <span class="float-right font-weight-bold">{{message.name}}</span> {{message.message}}
+                                <td style="display:flex;justify-content:space-between;align-items:center">
+                                  <div class="text">
+                                   <span class="font-weight-bold"> {{formation.name}}</span> by {{formation.formateur}}
+                                  </div>
+                                  <div class="btn">
+                                    <a href="{% url 'join_formation' formation.slug %}" style="margin-left:15px;" class="btn btn-outline-success">Join</a>                   
+                                  </div>
                                 </td>
                             </tr>
                             {% endfor %}

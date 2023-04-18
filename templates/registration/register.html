@@ -6,9 +6,11 @@
 	<div class="card card-authentication1 mx-auto my-4">
 		<div class="card-body">
 		 <div class="card-content p-2">
+			<a href="{% url 'home' %}">
 		 	<div class="text-center">
 		 		<img src="{% static 'images/logo-icon.png' %}" alt="logo icon">
 		 	</div>
+		</a>
 		  <div class="card-title text-uppercase text-center py-3">Sign Up</div>
       {% if form.errors %}
       {% for field in form %}
@@ -23,6 +25,8 @@
                 <p>{{ form.email }}</p>
               <p>{{ form.username.label_tag }}</p>
               <p>{{ form.username }}</p>
+			  <label for="{{ form.cin.id_for_label }}">CIN:</label>
+			  {{ form.cin }}
               <p>{{ form.password1.label_tag }}</p>
               <p>{{ form.password1 }}</p>
               <p>{{ form.password2.label_tag }}</p>

@@ -28,9 +28,11 @@
           {% if user.is_authenticated %}
           <li><a href="{% url 'profile' %}">Profile</a></li>
           {% endif %}
-          <li><a href="{% url 'create_formation' %}">Create</a></li>
           <li><a href="#">Formateurs</a></li>
           <li><a href="#">Contact</a></li>
+          {% if user.is_staff %}
+          <li><a href="{% url 'create_formation' %}">Create</a></li>
+          {% endif %}
         </ul>
         <i class="bi bi-list mobile-nav-toggle"></i>
       </nav><!-- .navbar -->          
@@ -192,12 +194,10 @@
                   </div>
                   <div class="trainer-rank d-flex align-items-center">
                     <i class="bx bx-user"></i>&nbsp; {{ formation.participant.count }}
-                    {% if user.is_authenticated %}
                     {% if participant_user in formation.participant.all %}
                     <a href="{% url 'leave_formation' formation.slug %}" style="margin-left:15px;color:red;" class="join">Leave</a>                   
                     {% else %}
                     <a href="{% url 'join_formation' formation.slug %}" style="margin-left:15px;" class="join">Join</a>                   
-                    {% endif %}
                     {% endif %}
                     &nbsp;&nbsp;
                   </div>
