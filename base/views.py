@@ -173,5 +173,24 @@ def profile(request):
     return render(request, 'base/profile.html',context)
 
 def formation_detail(request,slug):
+    context = {}
+    formation = {}
+    if slug:
+        formation = Formation.objects.get(slug=slug)
+        print(formation.name)
+    d1 = formation.date_debut
+    d2 = formation.date_fin
+    nb_jours = abs((d2 - d1).days)
     print(slug)
-    return render(request, 'base/detail2.html')
+    print(formation.name)
+    print(d1)
+    print(d2)
+    print(nb_jours)
+    dates = []
+    context['formation'] = formation
+    while d1 <= d2:
+        dates.append(d1)
+        d1 += datetime.timedelta(days=1)
+    context['dates'] = dates
+    context['participants'] = formation.participant.all()
+    return render(request, 'base/detail2.html',context)

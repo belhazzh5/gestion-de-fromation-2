@@ -1,29 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
 {% block content %}
-<!-- ======= Header ======= -->
-  <header id="header" class="fixed-top">
-    <div class="container d-flex align-items-center">
-      {% comment %} <h1 class="logo me-auto"><a href="index.html">Mentor</a></h1> {% endcomment %}
-      <!-- Uncomment below if you prefer to use an image logo -->
-      <a href="{% url 'home' %}" class="logo me-auto"><img src="{% static 'img/favicon.png' %}" alt="logo"  class="img-fluid"><span class="logotxt"> Centre National de l’Informatique </span></a>
-
-      <nav id="navbar" class="navbar order-last order-lg-0">
-        <ul>
-          <li><a class="active" href="index.html">Home</a></li>
-          <li><a href="#">A propos de nous</a></li>
-          <li><a href="#">Courses</a></li>
-          <li><a href="#">Formateurs</a></li>
-          <li><a href="#">Contact</a></li>
-        </ul>
-        <i class="bi bi-list mobile-nav-toggle"></i>
-      </nav><!-- .navbar -->          
-      {% if user.is_authenticated %}
-      <a href="{% url 'logout' %}" class="get-started-btn">Deconnecter</a>
-      {% endif %}
-
-    </div>
-  </header><!-- End Header -->
   <main id="main">
 
     <!-- ======= Breadcrumbs ======= -->

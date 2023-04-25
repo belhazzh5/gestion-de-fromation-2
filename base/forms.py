@@ -48,10 +48,10 @@ class FormationForm(forms.ModelForm):
         super(FormationForm, self).__init__(*args, **kwargs)
         for visible in self.visible_fields():
             visible.field.widget.attrs['class'] = 'form-control'
-    def clean_date_fin(self):
+    def clean_date_fin(self,*args, **kwargs):
         date = self.cleaned_data['date_debut']
         data = self.cleaned_data['date_fin']
-        if date < datetime.date().today():
+        if date < datetime.date.today():
             raise ValidationError(_("la date de debut doit etre a partir d'aujoudrd'hui !"))
         if data < self.cleaned_data['date_debut']:
             raise ValidationError(_("la date de fin doit etre superieur au date debut !"))
