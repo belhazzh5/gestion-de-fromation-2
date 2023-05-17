@@ -91,6 +91,8 @@ DATABASES = {
 }
 
 
+CSRF_TRUSTED_ORIGINS = ['starfish-app-2-8og8d.ondigitalocean.app']
+
 
 
 
