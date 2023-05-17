@@ -79,23 +79,23 @@ WSGI_APPLICATION = 'gestion_formation.wsgi.application'
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
-
 # DATABASES = {
 #     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': 'mydb',
-#         'USER': 'doadmin',
-#         'PASSWORD': 'AVNS_LKSan9_-IaxH-C7Hwwl',
-#         'HOST': 'mydb-do-user-12145872-0.b.db.ondigitalocean.com',  # If running on the local machine, use 'localhost' or '127.0.0.1'
-#         'PORT': '25060',  # Default PostgreSQL port is '5432'
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
 #     }
 # }
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'defaultdb',
+        'USER': 'doadmin',
+        'PASSWORD': 'AVNS_LKSan9_-IaxH-C7Hwwl',
+        'HOST': 'mydb-do-user-12145872-0.b.db.ondigitalocean.com',  # If running on the local machine, use 'localhost' or '127.0.0.1'
+        'PORT': '25060',  # Default PostgreSQL port is '5432'
+    }
+}
 
 
 
@@ -150,7 +150,7 @@ STATICFILES_DIRS = [
 ]
 MEDIA_ROOT = os.path.join(BASE_DIR,'media')
 STATIC_URL = '/static/'
-LOGIN_REDIRECT_URL = reverse_lazy('home')
+LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
