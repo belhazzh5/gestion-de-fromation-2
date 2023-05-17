@@ -26,7 +26,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-%a2j5%*01-pv1sw--t1de8_rtb%p4fouuwu)r^yd2xd-3(vk%t'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = str (os.environ.get('DEBUG')) == '1'
 
 ALLOWED_HOSTS = ['*']
 
@@ -78,15 +78,29 @@ WSGI_APPLICATION = 'gestion_formation.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
+DB_USERNAME = os.environ.get('POSTGRES_USER')
+DB_PASSWORD = os.environ.get('POSTGRES_PASSWORD')
+DB_DATABASE = os.environ.get('POSTGRES_DB')
+DB_HOST = os.environ.get('POSTGRES_HOST')
+DB_PORT = os.environ.get('POSTGRES_PORT')
+DB_IS_AVAILABLE = all([
+	DB_USERNAME,
+	DB_PASSWORD,
+	DB_DATABASE,
+	DB_HOST,
+	DB_PORT
+])
+POSTGRES_READY = str (os.environ.get('POSTGRES_READY')) == '1'
 
-DATABASES = {
+if DB_IS_AVAILABLE and POSTGRES_READY:
+	DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'defaultdb',
-        'USER': 'doadmin',
-        'PASSWORD': 'AVNS_LKSan9_-IaxH-C7Hwwl',
-        'HOST': 'mydb-do-user-12145872-0.b.db.ondigitalocean.com',  # If running on the local machine, use 'localhost' or '127.0.0.1'
-        'PORT': '25060',  # Default PostgreSQL port is '5432'
+        'NAME': DB_DATABASE,
+        'USER': DB_USERNAME,
+        'PASSWORD': DB_PASSWORD,
+        'HOST': DB_HOST,  # If runnin>
+        'PORT': DB_PORT,  # Default PostgreSQL port is '5432'
     }
 }
 
