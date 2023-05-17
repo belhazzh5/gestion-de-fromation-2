@@ -167,8 +167,7 @@ def profile(request):
             notifications = []
             for notif in reversed(notifications_rev):
                 notifications.append(notif)
-        context['notifications'] = notifications[:5]
-        print(notifications)
+            context['notifications'] = notifications[:5]
         context['suggestions'] = Formation.objects.exclude(participant=request.user.participant)[:3]
     return render(request, 'base/profile.html',context)
 
