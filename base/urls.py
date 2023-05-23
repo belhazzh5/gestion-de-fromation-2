@@ -12,10 +12,18 @@ from .views import (
     FormationUpdate,
     FormationDelete,
     formation_detail,
+    FormateurListView,
+    FormateurCreateView,
+    FormateurUpdateView,
+    FormateurDeleteView,
 )
 
 urlpatterns = [
     path("",FormationListView.as_view(),name="home"),
+    path('formateurs/', FormateurListView.as_view(), name='formateur-list'),
+    path('formateurs/create/', FormateurCreateView.as_view(), name='formateur-create'),
+    path('formateurs/<int:pk>/update/', FormateurUpdateView.as_view(), name='formateur-update'),
+    path('formateurs/<int:pk>/delete/', FormateurDeleteView.as_view(), name='formateur-delete'),
     path("profile/",profile,name="profile"),
     path("formation/create/",FormationCreateView.as_view(),name="create_formation"),
     path('user/register/', signUpView, name='register'),

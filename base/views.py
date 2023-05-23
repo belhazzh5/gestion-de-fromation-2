@@ -1,5 +1,5 @@
 from django.shortcuts import render,get_object_or_404,redirect
-from .models import Formation,Participant,Profile,Activity,Notification
+from .models import Formation,Participant,Profile,Activity,Notification,Formateur
 from .forms import UserRegisterForm,ProfileForm,FormationForm
 from django.contrib.auth.decorators import login_required
 from django.views.generic import ListView,DetailView,CreateView,UpdateView,DeleteView
@@ -42,6 +42,7 @@ class FormationListView(ListView):
 
         # Add the user to the context data dictionary
         context['user'] = user
+        context['formateurs'] = Formateur.objects.all()
         if user.is_authenticated:
             try:
                 context['participant_user'] = Participant.objects.get(user=user)
@@ -60,10 +61,11 @@ class FormationCreateView(CreateView):
     form_class = FormationForm
     template_name = "base/create_formation.html"
     queryset = Formation.objects.none()
-    def get_success_url(self):
-        formation_slug = self.kwargs['slug']
-        formation = get_object_or_404(Formation, slug=formation_slug)
-        return reverse_lazy('formation',kwargs={'slug':formation.slug})
+    success_url = '/'
+    def form_valid(self, form):
+        # Set the user as the currently authenticated user
+        form.instance.user = self.request.user
+        return super().form_valid(form)
 class FormationUpdate(UpdateView):
     model = Formation
     fields = ("name","num_salle","domaine","description","date_debut","horraire_debut","date_fin","formateur","max_places","image")
@@ -72,7 +74,10 @@ class FormationUpdate(UpdateView):
         formation_slug = self.kwargs['slug']
         formation = get_object_or_404(Formation, slug=formation_slug)
         return reverse_lazy('formation',kwargs={'slug':formation.slug})
-
+    def form_valid(self, form):
+        # Set the user as the currently authenticated user
+        form.instance.user = self.request.user
+        return super().form_valid(form)
 
 class FormationDelete(DeleteView):
     model = Formation
@@ -180,11 +185,6 @@ def formation_detail(request,slug):
     d1 = formation.date_debut
     d2 = formation.date_fin
     nb_jours = abs((d2 - d1).days)
-    print(slug)
-    print(formation.name)
-    print(d1)
-    print(d2)
-    print(nb_jours)
     dates = []
     context['formation'] = formation
     while d1 <= d2:
@@ -193,3 +193,27 @@ def formation_detail(request,slug):
     context['dates'] = dates
     context['participants'] = formation.participant.all()
     return render(request, 'base/detail2.html',context)
+
+#CRUD for formateur models
+class FormateurListView(ListView):
+    model = Formateur
+    template_name = 'base/formateur_list.html'
+    context_object_name = 'formateurs'
+
+class FormateurCreateView(CreateView):
+    model = Formateur
+    fields = ['nom','prenom','email','domaine','image']
+    template_name = 'base/formateur_create.html'
+    def get_success_url(self):
+        return reverse_lazy('formateur-list')
+class FormateurUpdateView(UpdateView):
+    model = Formateur
+    fields = ['nom','prenom','email','image']
+    template_name = 'base/formateur_update.html'
+    def get_success_url(self):
+        return reverse_lazy('formateur-list')
+class FormateurDeleteView(DeleteView):
+    model = Formateur
+    template_name = 'base/formateur_delete.html'
+    def get_success_url(self):
+        return reverse_lazy('formateur-list')

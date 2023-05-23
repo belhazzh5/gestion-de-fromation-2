@@ -10,11 +10,13 @@ from django.contrib.auth import get_user_model
 # Create your models here.
 
 class Formateur (models.Model):
-    name = models.CharField(max_length=50)
+    nom = models.CharField(max_length=50)
     prenom = models.CharField(max_length=50)
-    image = models.ImageField(upload_to="images-formation",blank=True, null=True)
+    email = models.EmailField(max_length=254,blank=True, null=True)
+    domaine = models.CharField(max_length=50,blank=True, null=True)
+    image = models.ImageField(upload_to="images-formation",blank=True, null=True,default='/static/images/az.jpg')
     def __str__(self):
-        return self.name
+        return self.nom
 
 class Participant(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE,null=True,blank=True)
@@ -40,6 +42,7 @@ class Formation(models.Model):
     max_places = models.IntegerField(blank=True, null=True,default=20)
     image = models.ImageField(upload_to="images-formation",blank=True, null=True)
     participant = models.ManyToManyField(Participant,blank=True)
+    user = models.OneToOneField(User, on_delete=models.CASCADE,null=True,blank=True)
     slug = models.SlugField(null=True,blank=True)
     def __str__(self):
         return str(self.name + " par " + self.formateur.name)

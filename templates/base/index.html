@@ -178,14 +178,19 @@
     <!-- ======= Trainers Section ======= -->
     <section id="trainers" class="trainers">
       <div class="container" data-aos="fade-up">
-
+        <div class="section-title"> 
+          <h2>Formateurs</h2>
+        </div>
         <div class="row" data-aos="zoom-in" data-aos-delay="100">
+          {% for formateur in formateurs %}
           <div class="col-lg-4 col-md-6 d-flex align-items-stretch">
             <div class="member">
-              <img src="{% static 'img/trainers/trainer-1.jpg' %}" class="img-fluid" alt="">
+              {% if formateur.image %}              
+              <img src="{{formateur.image.url}}" class="img-fluid" alt="{{formateur.nom}}">
+              {% endif %}
               <div class="member-content">
-                <h4>Mhiri Mohamed Ali</h4>
-                <span>Web Development</span>
+                <h4>{{formateur.nom}} {{formateur.prenom}}</h4>
+                <span>{{formateur.domaine}}</span>
                 <p>
                   Il forme les employés d'une entreprise à un nouveau logiciel ou à de nouvelles fonctionnalités mais aussi des ingénieurs qui doivent maîtriser des outils plus complexes.
                 </p>
@@ -198,45 +203,7 @@
               </div>
             </div>
           </div>
-
-          <div class="col-lg-4 col-md-6 d-flex align-items-stretch">
-            <div class="member">
-              <img src="{% static 'img/trainers/trainer-2.jpg' %}" class="img-fluid" alt="">
-              <div class="member-content">
-                <h4>Sarah Jhinson</h4>
-                <span>Marketing</span>
-                <p>
-                  Il forme les employés d'une entreprise à un nouveau logiciel ou à de nouvelles fonctionnalités mais aussi des ingénieurs qui doivent maîtriser des outils plus complexes
-                </p>
-                <div class="social">
-                  <a href=""><i class="bi bi-twitter"></i></a>
-                  <a href=""><i class="bi bi-facebook"></i></a>
-                  <a href=""><i class="bi bi-instagram"></i></a>
-                  <a href=""><i class="bi bi-linkedin"></i></a>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-lg-4 col-md-6 d-flex align-items-stretch">
-            <div class="member">
-              <img src="{% static 'img/trainers/trainer-3.jpg' %}" class="img-fluid" alt="">
-              <div class="member-content">
-                <h4>William Anderson</h4>
-                <span>Content</span>
-                <p>
-                  Il forme les employés d'une entreprise à un nouveau logiciel ou à de nouvelles fonctionnalités mais aussi des ingénieurs qui doivent maîtriser des outils plus complexes
-                </p>
-                <div class="social">
-                  <a href=""><i class="bi bi-twitter"></i></a>
-                  <a href=""><i class="bi bi-facebook"></i></a>
-                  <a href=""><i class="bi bi-instagram"></i></a>
-                  <a href=""><i class="bi bi-linkedin"></i></a>
-                </div>
-              </div>
-            </div>
-          </div>
-
+          {% endfor %}
         </div>
 
       </div>

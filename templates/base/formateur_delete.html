@@ -1,0 +1,14 @@
+{% extends "registration/based_login.html" %}
+
+{% block content %}
+<h1>Delete Formateur</h1>
+
+<p>Are you sure you want to delete this formateur?</p>
+
+<form method="post">
+  {% csrf_token %}
+  <button type="submit">Delete</button>
+</form>
+
+
+{% endblock %}

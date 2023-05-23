@@ -78,16 +78,28 @@ WSGI_APPLICATION = 'gestion_formation.wsgi.application'
 # Database
 
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'defaultdb',
+#         'USER': 'doadmin',
+#         'PASSWORD': 'AVNS_LKSan9_-IaxH-C7Hwwl',
+#         'HOST': 'mydb-do-user-12145872-0.b.db.ondigitalocean.com',  # If running on the local machine, use 'localhost' or '127.0.0.1'
+#         'PORT': '25060',  # Default PostgreSQL port is '5432'
+#     }
+# }
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'defaultdb',
-        'USER': 'doadmin',
-        'PASSWORD': 'AVNS_LKSan9_-IaxH-C7Hwwl',
-        'HOST': 'mydb-do-user-12145872-0.b.db.ondigitalocean.com',  # If running on the local machine, use 'localhost' or '127.0.0.1'
-        'PORT': '25060',  # Default PostgreSQL port is '5432'
+        'NAME': 'postgres',
+        'USER': 'postgres',
+        'PASSWORD': '1872000zzH5*',
+        'HOST': '34.30.73.182',  # If running on the local machine, use 'localhost' or '127.0.0.1'
+        'PORT': '5432',  # Default PostgreSQL port is '5432'
     }
 }
+
 
 
 CSRF_TRUSTED_ORIGINS = ['https://starfish-app-2-8og8d.ondigitalocean.app']
