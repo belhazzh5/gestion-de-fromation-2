@@ -1,6 +1,7 @@
 {% extends "registration/based_login.html" %}
 {% load static %}
 {% block content %}
+{% if request.user.is_staff %}
 
 
 <!-- start loader -->
@@ -165,5 +166,8 @@
    <!--Start Back To Top Button-->
     <a href="javaScript:void();" class="back-to-top"><i class="fa fa-angle-double-up"></i> </a>
     <!--End Back To Top Button-->
-	
+    {% else %}
+    <h1>Permession Denied to see this page!</h1>
+    {% endif %}
+
     {% endblock content %}
