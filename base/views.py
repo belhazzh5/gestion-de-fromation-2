@@ -48,7 +48,6 @@ class FormationListView(ListView):
                 context['participant_user'] = Participant.objects.get(user=user)
             except:
                 pass
-        # Return the updated context data dictionary
         return self.render_to_response(context)
     
 class FormationDetailView(DetailView):
