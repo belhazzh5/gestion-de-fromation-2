@@ -162,8 +162,11 @@ def profile(request):
     context = {}
     if request.user:
         context['profile'] = Profile.objects.get(user=request.user)
-        participant = Participant.objects.get(user=request.user)
-        context['formations'] = participant.formation_set.all()
+        try:
+            participant = Participant.objects.get(user=request.user)
+            context['formations'] = participant.formation_set.all()
+        except:
+            pass
         context['activities'] = Activity.objects.filter(user=request.user)[:4]
         context['form'] = form
         context['allFormations'] = Formation.objects.all()[:10]
@@ -173,7 +176,10 @@ def profile(request):
             for notif in reversed(notifications_rev):
                 notifications.append(notif)
             context['notifications'] = notifications[:5]
-        context['suggestions'] = Formation.objects.exclude(participant=request.user.participant)[:3]
+        try:
+            context['suggestions'] = Formation.objects.exclude(participant=request.user.participant)[:3]
+        except:
+            pass
     return render(request, 'base/profile.html',context)
 
 def formation_detail(request,slug):
