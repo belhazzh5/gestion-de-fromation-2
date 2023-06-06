@@ -42,7 +42,7 @@ class Formation(models.Model):
     max_places = models.IntegerField(blank=True, null=True,default=20)
     image = models.ImageField(upload_to="images-formation",blank=True, null=True)
     participant = models.ManyToManyField(Participant,blank=True)
-    user = models.OneToOneField(User, on_delete=models.CASCADE,null=True,blank=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE,null=True,blank=True)
     slug = models.SlugField(null=True,blank=True)
     def __str__(self):
         return str(self.name + " par " + self.formateur.name)

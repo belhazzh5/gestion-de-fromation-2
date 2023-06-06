@@ -57,7 +57,7 @@ class FormationDetailView(DetailView):
     context_object_name = "formation"
 
 
-class FormationCreateView(CreateView):
+class FormationCreateView(LoginRequiredMixin,CreateView):
     form_class = FormationForm
     template_name = "base/create_formation.html"
     queryset = Formation.objects.none()
