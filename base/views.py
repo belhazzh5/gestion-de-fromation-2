@@ -42,7 +42,7 @@ class FormationListView(ListView):
 
         # Add the user to the context data dictionary
         context['user'] = user
-        print(Profile.objects.all())
+        server_name = request.META['SERVER_NAME']
         context['formateurs'] = Formateur.objects.all()
         if user.is_authenticated:
             try:

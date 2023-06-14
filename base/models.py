@@ -10,7 +10,7 @@ from django.contrib.auth import get_user_model
 # Create your models here.
 
 class Formateur (models.Model):
-    nom = models.CharField(max_length=50)
+    nom = models.CharField(max_length=70)
     prenom = models.CharField(max_length=50)
     email = models.EmailField(max_length=254,blank=True, null=True)
     domaine = models.CharField(max_length=50,blank=True, null=True)

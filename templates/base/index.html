@@ -152,9 +152,11 @@
                   <div class="trainer-rank d-flex align-items-center">
                     <i class="bx bx-user"></i>&nbsp; {{ formation.participant.count }}
                     {% if participant_user in formation.participant.all %}
+                    {% if not participant_user.user.is_staff %}
                     <a href="{% url 'leave_formation' formation.slug %}" style="margin-left:15px;color:red;" class="join">Leave</a>                   
                     {% else %}
                     <a href="{% url 'join_formation' formation.slug %}" style="margin-left:15px;" class="join">Join</a>                   
+                    {% endif %}
                     {% endif %}
                     &nbsp;&nbsp;
                   </div>
