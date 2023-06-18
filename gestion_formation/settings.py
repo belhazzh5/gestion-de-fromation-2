@@ -14,6 +14,8 @@ from django.urls import reverse_lazy
 from pathlib import Path
 import os
 from urllib.parse import urlparse
+from google.oauth2 import service_account
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -159,3 +161,22 @@ LOGIN_REDIRECT_URL = '/profile/'
 LOGOUT_REDIRECT_URL = '/'
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+# google cloud storage buckets
+
+# Set the default storage backend to use Google Cloud Storage
+
+# Configure the Google Cloud Storage settings
+# GS_BUCKET_NAME = 'media-django-zzh5'
+# GS_PROJECT_ID = 'gestion-formation-3'
+# GS_SERVICE_KEY_PATH = '/gestion_formation/keys/gestion-formation-3-30d65119a874.json'  # Path to your service account key file
+# GS_DEFAULT_ACL = 'publicRead'
+
+# # Set the URL for serving media files
+# GS_BUCKET_NAME = 'gestion-formation-3-30d65119a874'
+# MEDIA_URL = f'https://storage.googleapis.com/{GS_BUCKET_NAME}/'
+
+# # ...
+
+# # Configure Google Cloud Storage authentication
+# GS_CREDENTIALS = service_account.Credentials.from_service_account_file(GS_SERVICE_KEY_PATH)
