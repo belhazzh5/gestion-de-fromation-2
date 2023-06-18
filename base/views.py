@@ -12,23 +12,6 @@ from django.contrib.auth import login,authenticate
 from random import sample
 
 
-# Create your views here.
-# def home(request):
-#     context = {
-#         'formations': Formation.objects.all()
-#     }
-#     return render(request, "base/index.html",context)
-
-# def register(request):
-#     if request.method == 'POST':
-#         form = UserRegisterForm(request.POST)
-#         if form.is_valid():
-#             user = form.save()
-#             login(request, user)
-#             return redirect('home')
-#     else:
-#         form = UserRegisterForm()
-#     return render(request, 'registration/register.html', {'form': form})
 class FormationListView(ListView):
     model = Formation
     template_name = "base/index.html"
