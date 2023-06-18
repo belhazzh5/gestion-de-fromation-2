@@ -49,11 +49,10 @@
           {% if user.is_authenticated %}
           <li><a href="{% url 'profile' %}">Profile</a></li>
           {% endif %}
-          <li><a href="{% url 'formateur-list' %}">Formateurs</a></li>
-          <li><a href="#">Contacts</a></li>
           {% if user.is_staff %}
-          <li><a href="{% url 'create_formation' %}">Create</a></li>
+          <li><a href="{% url 'formateur-list' %}">Formateurs</a></li>
           {% endif %}
+          <li><a href="#">Contacts</a></li>
         </ul>
         <i class="bi bi-list mobile-nav-toggle"></i>
       </nav><!-- .navbar -->          
