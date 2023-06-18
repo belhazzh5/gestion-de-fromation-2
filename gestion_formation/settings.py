@@ -14,7 +14,6 @@ from django.urls import reverse_lazy
 from pathlib import Path
 import os
 from urllib.parse import urlparse
-from google.oauth2 import service_account
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
